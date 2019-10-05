@@ -9,4 +9,6 @@ public class DepartmentView {
     private Boolean isParent;
     private DepartmentView parentDepartment;
     private Integer countEmployee;
+    private Integer parentDepartmentId;
+
 }
