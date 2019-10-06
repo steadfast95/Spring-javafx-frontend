@@ -1,10 +1,7 @@
-package app.controller;
+package app.components;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableCell;
-
-
-
 
 public class BooleanCell<T> extends TableCell<T,Boolean> {
     @Override
@@ -17,7 +14,10 @@ public class BooleanCell<T> extends TableCell<T,Boolean> {
             checkbox.setOpacity(1);
             setGraphic(checkbox);
             setStyle("-fx-alignment: CENTER;");
+        }else {
+            setGraphic(null);
         }
+
     }
 
 }

@@ -8,4 +8,5 @@ public class EmployeeView {
     private String name;
     private DepartmentView department;
     private Boolean isArchive;
+    private Integer departmentId;
 }
