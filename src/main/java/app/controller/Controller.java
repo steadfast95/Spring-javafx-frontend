@@ -98,6 +98,7 @@ public class Controller {
             restClientEmployee.deleteEmployee(employeeView.getId());
         }
         reloadEmployee();
+        reloadDepartment();
     }
 
     private void deleteDepartment() {
