@@ -39,8 +39,10 @@ public class CreateDepartmentController {
             }
         };
 
+        headDepartmentComboBox.setButtonCell(factory.call(null));
         headDepartmentComboBox.setCellFactory(factory);
         headDepartmentComboBox.getItems().addAll(restClientDepartments.getDepartmentList());
+
 
         okButton.setOnAction(action->{
             DepartmentView departmentView = new DepartmentView();

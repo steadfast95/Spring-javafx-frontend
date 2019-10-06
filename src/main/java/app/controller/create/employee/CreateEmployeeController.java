@@ -48,6 +48,7 @@ public class CreateEmployeeController {
         };
 
         departmentComboBox.setCellFactory(factory);
+        departmentComboBox.setButtonCell(factory.call(null));
         departmentComboBox.getItems().addAll(restClientDepartments.getDepartmentList());
 
         okButton.setOnAction(action->{
