@@ -59,6 +59,8 @@ public class Controller {
     Button deleteEmployeeButton;
     @FXML
     Button refreshEmployeeButton;
+    @FXML
+    Button updateEmployeeButton;
     //endregion
 
     @FXML
@@ -88,7 +90,9 @@ public class Controller {
 
         createDepartmentButton.setOnAction(action -> CreateDepartmentController.openCreateDepartmentWindow(this));
 
-        createEmployeeButton.setOnAction(action -> CreateEmployeeController.openCreateEmployeeWindow(this));
+        createEmployeeButton.setOnAction(action -> CreateEmployeeController.openCreateEmployeeWindow(this,false,null));
+
+        updateEmployeeButton.setOnAction(action -> CreateEmployeeController.openCreateEmployeeWindow(this,true,employeeTable.getSelectionModel().getSelectedItem()));
 
     }
 
@@ -128,6 +132,7 @@ public class Controller {
 
     private void reloadDepartment() {
         ObservableList<DepartmentView> departmentsData = FXCollections.observableArrayList();
+        departmentTable.refresh();
         for (DepartmentView departmentView : restClientDepartments.getDepartmentList()) {
             if (departmentView != null && departmentView.getParentDepartment() != null) {
                 departmentView.setParentDepartmentId(departmentView.getParentDepartment().getId());
@@ -141,6 +146,7 @@ public class Controller {
 
     private void reloadEmployee() {
         ObservableList<EmployeeView> employeeData = FXCollections.observableArrayList();
+        employeeTable.refresh();
         for (EmployeeView employeeView : restClientEmployee.getEmployeeList()) {
             if (employeeView != null && employeeView.getDepartment() != null) {
                 employeeView.setDepartmentId(employeeView.getDepartment().getId());

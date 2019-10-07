@@ -13,6 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+
 import java.io.IOException;
 
 public class CreateEmployeeController {
@@ -33,17 +34,29 @@ public class CreateEmployeeController {
     @FXML
     CheckBox isArchiveCheckBox;
 
-    private void init(Controller mainController){
+
+
+    boolean updateForm = false;
+    EmployeeView employeeView;
+
+    private void init(Controller mainController, boolean updateForm, EmployeeView employeeView) {
         this.mainController = mainController;
+        this.updateForm = updateForm;
+        this.employeeView = employeeView;
+        if (updateForm && employeeView != null) {
+            nameTextField.setText(employeeView.getName());
+            departmentComboBox.getSelectionModel().select(employeeView.getDepartment() != null ? employeeView.getDepartment() : null);
+            isArchiveCheckBox.setSelected(employeeView.getIsArchive());
+        }
     }
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         Callback<ListView<DepartmentView>, ListCell<DepartmentView>> factory = lv -> new ListCell<DepartmentView>() {
             @Override
             protected void updateItem(DepartmentView item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty ? "" : item.getId() + " " +item.getName());
+                setText(empty ? "" : item.getId() + " " + item.getName());
             }
         };
 
@@ -51,31 +64,38 @@ public class CreateEmployeeController {
         departmentComboBox.setButtonCell(factory.call(null));
         departmentComboBox.getItems().addAll(restClientDepartments.getDepartmentList());
 
-        okButton.setOnAction(action->{
-            EmployeeView employeeView = new EmployeeView();
-            employeeView.setName(nameTextField.getText());
-            employeeView.setIsArchive(isArchiveCheckBox.isSelected());
-            employeeView.setDepartment(departmentComboBox.getSelectionModel().getSelectedItem());
-            restClientEmployee.addEmployee(employeeView);
-            if(mainController!=null){
+        okButton.setOnAction(action -> {
+            if(updateForm == false) {
+                EmployeeView employeeView = new EmployeeView();
+                employeeView.setName(nameTextField.getText());
+                employeeView.setIsArchive(isArchiveCheckBox.isSelected());
+                employeeView.setDepartment(departmentComboBox.getSelectionModel().getSelectedItem());
+                restClientEmployee.addEmployee(employeeView);
+            }else {
+                this.employeeView.setName(nameTextField.getText());
+                this.employeeView.setIsArchive(isArchiveCheckBox.isSelected());
+                this.employeeView.setDepartment(departmentComboBox.getSelectionModel().getSelectedItem());
+                restClientEmployee.addEmployee(this.employeeView);
+            }
+            if (mainController != null) {
                 mainController.externalReload();
             }
-            Stage stage  = (Stage)okButton.getScene().getWindow();
+            Stage stage = (Stage) okButton.getScene().getWindow();
             stage.close();
         });
-        discardButton.setOnAction(action->{
-            Stage stage  = (Stage)okButton.getScene().getWindow();
+        discardButton.setOnAction(action -> {
+            Stage stage = (Stage) okButton.getScene().getWindow();
             stage.close();
         });
     }
 
-    public static void openCreateEmployeeWindow(Controller mainController) {
+    public static void openCreateEmployeeWindow(Controller mainController, boolean updateForm, EmployeeView employeeView) {
         try {
             FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("fxml/createEmployee.fxml"));
             Stage stage = new Stage(StageStyle.DECORATED);
             Scene scene = new Scene(loader.load());
             CreateEmployeeController controller = loader.getController();
-            controller.init(mainController);
+            controller.init(mainController, updateForm, employeeView);
             stage.setTitle("Создание отдела");
             stage.setScene(scene);
             stage.setResizable(false);
