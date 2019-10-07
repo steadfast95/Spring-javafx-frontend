@@ -1,8 +1,8 @@
 package app.controller;
 
 import app.components.BooleanCell;
-import app.controller.create.department.CreateDepartmentController;
-import app.controller.create.employee.CreateEmployeeController;
+import app.controller.create.department.DepartmentController;
+import app.controller.create.employee.EmployeeController;
 import app.rest.RestClientDepartments;
 import app.rest.RestClientEmployee;
 import app.view.DepartmentView;
@@ -88,11 +88,11 @@ public class Controller {
             alert.showAndWait().filter(response -> response == ButtonType.OK).ifPresent(response -> deleteEmployee());
         });
 
-        createDepartmentButton.setOnAction(action -> CreateDepartmentController.openCreateDepartmentWindow(this));
+        createDepartmentButton.setOnAction(action -> DepartmentController.openCreateDepartmentWindow(this));
 
-        createEmployeeButton.setOnAction(action -> CreateEmployeeController.openCreateEmployeeWindow(this,false,null));
+        createEmployeeButton.setOnAction(action -> EmployeeController.openCreateEmployeeWindow(this,false,null));
 
-        updateEmployeeButton.setOnAction(action -> CreateEmployeeController.openCreateEmployeeWindow(this,true,employeeTable.getSelectionModel().getSelectedItem()));
+        updateEmployeeButton.setOnAction(action -> EmployeeController.openCreateEmployeeWindow(this,true,employeeTable.getSelectionModel().getSelectedItem()));
 
     }
 
@@ -111,6 +111,7 @@ public class Controller {
             restClientDepartments.deleteDepartment(departmentView.getId());
         }
         reloadDepartment();
+        reloadEmployee();
     }
 
     private void initializeDepartmentsTableView() {

@@ -16,7 +16,7 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 
-public class CreateEmployeeController {
+public class EmployeeController {
 
     private Controller mainController;
 
@@ -34,10 +34,8 @@ public class CreateEmployeeController {
     @FXML
     CheckBox isArchiveCheckBox;
 
-
-
-    boolean updateForm = false;
-    EmployeeView employeeView;
+    private Boolean updateForm = false;
+    private EmployeeView employeeView;
 
     private void init(Controller mainController, boolean updateForm, EmployeeView employeeView) {
         this.mainController = mainController;
@@ -45,7 +43,7 @@ public class CreateEmployeeController {
         this.employeeView = employeeView;
         if (updateForm && employeeView != null) {
             nameTextField.setText(employeeView.getName());
-            departmentComboBox.getSelectionModel().select(employeeView.getDepartment() != null ? employeeView.getDepartment() : null);
+            departmentComboBox.getSelectionModel().select(employeeView.getDepartment());
             isArchiveCheckBox.setSelected(employeeView.getIsArchive());
         }
     }
@@ -65,7 +63,7 @@ public class CreateEmployeeController {
         departmentComboBox.getItems().addAll(restClientDepartments.getDepartmentList());
 
         okButton.setOnAction(action -> {
-            if(updateForm == false) {
+            if(updateForm.equals(false)) {
                 EmployeeView employeeView = new EmployeeView();
                 employeeView.setName(nameTextField.getText());
                 employeeView.setIsArchive(isArchiveCheckBox.isSelected());
@@ -75,7 +73,7 @@ public class CreateEmployeeController {
                 this.employeeView.setName(nameTextField.getText());
                 this.employeeView.setIsArchive(isArchiveCheckBox.isSelected());
                 this.employeeView.setDepartment(departmentComboBox.getSelectionModel().getSelectedItem());
-                restClientEmployee.addEmployee(this.employeeView);
+                restClientEmployee.updateEmployee(this.employeeView);
             }
             if (mainController != null) {
                 mainController.externalReload();
@@ -94,7 +92,7 @@ public class CreateEmployeeController {
             FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("fxml/createEmployee.fxml"));
             Stage stage = new Stage(StageStyle.DECORATED);
             Scene scene = new Scene(loader.load());
-            CreateEmployeeController controller = loader.getController();
+            EmployeeController controller = loader.getController();
             controller.init(mainController, updateForm, employeeView);
             stage.setTitle("Создание отдела");
             stage.setScene(scene);

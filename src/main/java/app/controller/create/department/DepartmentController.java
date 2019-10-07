@@ -14,7 +14,7 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 
-public class CreateDepartmentController {
+public class DepartmentController {
 
     private Controller mainController;
 
@@ -73,7 +73,7 @@ public class CreateDepartmentController {
             FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("fxml/createDepartment.fxml"));
             Stage stage = new Stage(StageStyle.DECORATED);
             Scene scene = new Scene(loader.load());
-            CreateDepartmentController controller = loader.getController();
+            DepartmentController controller = loader.getController();
             controller.init(mainController);
             stage.setTitle("Создание отдела");
             stage.setScene(scene);
